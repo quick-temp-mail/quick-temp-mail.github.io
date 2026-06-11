@@ -632,7 +632,6 @@
         }
     }
 </style>
-    <meta name="google-site-verification" content="YJTllYuqUOqadsGl68VHyW6Mv7Y4EmdGWEeB6aE5CXM" />
 </head>
 <body>
 
@@ -905,10 +904,10 @@
     
         <div class="footer">
     <div>
-        <a href="/privacy.html">Privacy Policy</a>
-        <a href="/terms.html">Terms of Service</a>
-        <a href="/about.html">About</a>
-        <a href="/faq.html">FAQ</a>
+        <a href="privacy.html" target="_blank">Privacy Policy</a>
+        <a href="terms.html" target="_blank">Terms of Service</a>
+        <a href="about.html" target="_blank">About</a>
+        <a href="faq.html" target="_blank">FAQ</a>
     </div>
 
     <div style="margin-top:12px;">
@@ -937,9 +936,9 @@ const CONFIG = {
     maxExtensions: 3,
 
     // Polling intervals (milliseconds)
-    pollActive: 2000,    // 5 sec when user active
-    pollIdle: 8000,     // 30 sec when idle
-    pollHidden: 12000,   // 60 sec when tab hidden
+    pollActive: 5000,    // 5 sec when user active
+    pollIdle: 30000,     // 30 sec when idle
+    pollHidden: 60000,   // 60 sec when tab hidden
 
     // How long until user is considered idle
     idleTimeout: 60000,  // 1 minute
@@ -966,7 +965,6 @@ let state = {
 
     // Which API we are using right now
     currentAPI: 'guerrilla',
-    lockedProvider: false,
 
     // List of emails in inbox
     messages: [],
@@ -989,6 +987,9 @@ let state = {
         guerrilla: true,
         onesecmail: true,
     },
+    // OTP tracking
+    lastOtp: null,
+    lastOtpEmailId: null,
 };
 
 // ============================================
@@ -1045,18 +1046,30 @@ function extractOTP(text) {
 }
 
 // Show OTP banner if code found
-function checkAndShowOTP(emailBody) {
+function checkAndShowOTP(emailBody, emailId) {
+    // Don't re-check same email
+    if (emailId && state.lastOtpEmailId === emailId) return;
     // Strip HTML tags to get plain text
     const plainText = emailBody.replace(/<[^>]*>/g, ' ');
     const otp = extractOTP(plainText);
 
     if (otp) {
+        state.lastOtp = otp;
+        state.lastOtpEmailId = emailId || null;
         document.getElementById('otpCode').textContent = otp;
         document.getElementById('otpBanner')
             .classList.add('visible');
-    } else {
-        document.getElementById('otpBanner')
-            .classList.remove('visible');
+        saveSession(); // persist OTP immediately
+    }
+}
+
+// Restore OTP from saved session after refresh
+function restoreOTP(savedData) {
+    if (savedData && savedData.lastOtp) {
+        state.lastOtp = savedData.lastOtp;
+        state.lastOtpEmailId = savedData.lastOtpEmailId;
+        document.getElementById('otpCode').textContent = savedData.lastOtp;
+        document.getElementById('otpBanner').classList.add('visible');
     }
 }
 
@@ -1087,10 +1100,10 @@ function sanitizeHTML(html) {
     return div.innerHTML;
 }
 
-// Save session to sessionStorage
+// Save session to localStorage so it survives refresh
 function saveSession() {
     if (state.email) {
-        sessionStorage.setItem('tmpmail_session',
+        localStorage.setItem('tmpmail_session',
             JSON.stringify({
                 email: state.email,
                 login: state.emailLogin,
@@ -1098,21 +1111,28 @@ function saveSession() {
                 timeLeft: state.timeLeft,
                 extensions: state.extensions,
                 api: state.currentAPI,
+                savedAt: Date.now(),
+                lastOtp: state.lastOtp || null,
+                lastOtpEmailId: state.lastOtpEmailId || null,
             })
         );
-        // Also save email to URL hash as backup
         window.location.hash = btoa(state.email);
     }
 }
 
-// Load session from sessionStorage
+// Load session from localStorage
 function loadSession() {
     try {
-        const saved = sessionStorage.getItem('tmpmail_session');
+        const saved = localStorage.getItem('tmpmail_session');
         if (saved) {
             const data = JSON.parse(saved);
-            // Only restore if still has time left
-            if (data.timeLeft > 10) {
+            // Calculate real time left accounting for time away
+            const secondsAway = data.savedAt
+                ? Math.floor((Date.now() - data.savedAt) / 1000)
+                : 0;
+            const realTimeLeft = (data.timeLeft || 0) - secondsAway;
+            if (realTimeLeft > 10) {
+                data.timeLeft = realTimeLeft;
                 return data;
             }
         }
@@ -1264,12 +1284,19 @@ const API = {
 
     // Switch to next working API
     switchAPI() {
-        if (state.lockedProvider) return false;
-        if (state.currentAPI === 'guerrilla' && state.apiHealth.onesecmail) {
+        if (state.currentAPI === 'guerrilla' &&
+            state.apiHealth.onesecmail) {
             state.currentAPI = 'onesecmail';
-            return true;
+            updateStatus('Switched to backup provider');
+            showToast('⚡ Switched to backup provider');
+        } else if (state.currentAPI === 'onesecmail' &&
+                   state.apiHealth.guerrilla) {
+            state.currentAPI = 'guerrilla';
+            updateStatus('Switched to primary provider');
+        } else {
+            updateStatus('All providers busy', true);
+            showToast('⚠️ All providers busy, retrying...');
         }
-        return false;
     },
 
     // Health check all APIs
@@ -1412,17 +1439,26 @@ async function generateEmail(forceNew = false) {
             state.emailLogin = saved.login;
             state.emailDomain = saved.domain;
             state.timeLeft = saved.timeLeft;
-            state.extensions = saved.extensions;
+            state.extensions = saved.extensions || 0;
             state.currentAPI = saved.api || 'guerrilla';
 
             document.getElementById('emailDisplay')
                 .textContent = state.email;
-            updateStatus(
-                'Connected via ' + state.currentAPI
-            );
+            updateStatus('Session restored');
+
+            // Re-request token for this address from Guerrilla Mail
+            // This allows inbox to load after refresh
+            try {
+                const url = 'https://api.guerrillamail.com/ajax.php?f=set_email_user&email_user=' + state.emailLogin + '&lang=en';
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.sid_token) state.token = data.sid_token;
+            } catch(e) {}
+
             startTimer();
             startPolling();
             generateQR();
+            restoreOTP(saved);
             showToast('✅ Session restored', 'success');
             return;
         }
@@ -1433,7 +1469,6 @@ async function generateEmail(forceNew = false) {
         const result = await API.getEmail();
 
         state.email = result.email;
-        state.lockedProvider = true;
         state.emailLogin = result.login;
         state.emailDomain = result.domain;
         state.timeLeft = CONFIG.emailExpiry;
@@ -1624,7 +1659,7 @@ async function openEmail(id) {
             .srcdoc = styledHTML;
 
         // Check for OTP in email body
-        checkAndShowOTP(email.body);
+        checkAndShowOTP(email.body, id);
 
         // Mark as read in our state
         const msg = state.messages
@@ -1698,6 +1733,18 @@ async function fetchMessages() {
                 (newCount > 1 ? 's' : '') + '!',
                 'success'
             );
+            // Auto fetch full body of new emails to detect OTP
+            const newEmails = messages.filter(m =>
+                !state.messages.find(old => old.id === m.id)
+            );
+            newEmails.forEach(async (m) => {
+                try {
+                    const full = await API.getMessage(m.id);
+                    if (full && full.body) {
+                        checkAndShowOTP(full.body, m.id);
+                    }
+                } catch(e) {}
+            });
         }
 
         state.messages = messages;
@@ -1853,9 +1900,11 @@ document.getElementById('newBtn')
             'Get a new address? Current inbox will be lost.'
         )) {
             // Clear session
-            sessionStorage.removeItem('tmpmail_session');
+            localStorage.removeItem('tmpmail_session');
             window.location.hash = '';
             state.token = null;
+            state.lastOtp = null;
+            state.lastOtpEmailId = null;
             generateEmail(true);
         }
     });
@@ -1913,17 +1962,7 @@ function init() {
 }
 
 // Run when page loads
-
-window.addEventListener('focus', () => {
-    if(state.email) fetchMessages();
-});
-
-document.addEventListener('visibilitychange', () => {
-    if(!document.hidden && state.email) fetchMessages();
-});
-
 window.addEventListener('load', init);
-
 
 </script>
 </body>
