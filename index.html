@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TempMail - Free Disposable Email</title>
+    <style>
+    /* ============================================
+       ROOT VARIABLES - Easy to change colors here
+       ============================================ */
+    :root {
+        --bg-primary: #0f0f0f;
+        --bg-secondary: #1a1a1a;
+        --bg-card: #242424;
+        --text-primary: #ffffff;
+        --text-secondary: #aaaaaa;
+        --accent: #00d4aa;
+        --accent-hover: #00b894;
+        --danger: #ff6b6b;
+        --border: #333333;
+        --shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    /* ============================================
+       LIGHT MODE COLORS
+       ============================================ */
+    .light-mode {
+        --bg-primary: #f5f5f5;
+        --bg-secondary: #ffffff;
+        --bg-card: #ffffff;
+        --text-primary: #111111;
+        --text-secondary: #666666;
+        --accent: #00b894;
+        --border: #dddddd;
+        --shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    /* ============================================
+       RESET AND BASE
+       ============================================ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: -apple-system, BlinkMacSystemFont,
+                     'Segoe UI', sans-serif;
+        min-height: 100vh;
+        transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       TOP NAVIGATION BAR
+       ============================================ */
+    .navbar {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: -0.5px;
+    }
+
+    .logo span {
+        color: var(--text-primary);
+    }
+
+    .nav-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-primary {
+        background: var(--accent);
+        color: #000000;
+    }
+
+    .btn-primary:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .btn-danger {
+        background: transparent;
+        color: var(--danger);
+        border: 1px solid var(--danger);
+    }
+
+    .btn-danger:hover {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn-icon {
+        background: transparent;
+        color: var(--text-secondary);
+        border: none;
+        padding: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+        color: var(--accent);
+        background: var(--bg-card);
+    }
+
+    /* ============================================
+       AD BANNER TOP
+       ============================================ */
+    .ad-banner-top {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+        padding: 10px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--text-secondary);
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* ============================================
+       MAIN CONTAINER
+       ============================================ */
+    .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px 15px;
+    }
+
+    /* ============================================
+       EMAIL ADDRESS CARD
+       ============================================ */
+    .email-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow);
+    }
+
+    .email-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .email-display {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--accent);
+        background: var(--bg-card);
+        padding: 14px 18px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        margin-bottom: 15px;
+        word-break: break-all;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+    }
+
+    .email-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* ============================================
+       TIMER
+       ============================================ */
+    .timer-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--bg-card);
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 15px;
+        border: 1px solid var(--border);
+    }
+
+    .timer-display {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--accent);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .timer-display.urgent {
+        color: var(--danger);
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    .timer-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    /* ============================================
+       QR CODE SECTION
+       ============================================ */
+    .qr-section {
+        text-align: center;
+        padding: 15px;
+        display: none;
+    }
+
+    .qr-section.visible {
+        display: block;
+    }
+
+    .qr-section img {
+        border-radius: 10px;
+        border: 3px solid var(--accent);
+    }
+
+    /* ============================================
+       OTP EXTRACTOR
+       ============================================ */
+    .otp-banner {
+        background: linear-gradient(
+            135deg, #00d4aa22, #00d4aa11
+        );
+        border: 2px solid var(--accent);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+        display: none;
+        animation: slideIn 0.3s ease;
+    }
+
+    .otp-banner.visible {
+        display: block;
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(-10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .otp-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .otp-code {
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--accent);
+        letter-spacing: 8px;
+        margin-bottom: 12px;
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* ============================================
+       API STATUS INDICATOR
+       ============================================ */
+    .api-status {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--text-secondary);
+        margin-bottom: 15px;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: blink 2s infinite;
+    }
+
+    .status-dot.error {
+        background: var(--danger);
+        animation: none;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+
+    /* ============================================
+       INBOX SECTION
+       ============================================ */
+    .inbox-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .inbox-title {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .inbox-count {
+        background: var(--accent);
+        color: #000;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+        margin-left: 8px;
+    }
+
+    /* ============================================
+       EMAIL LIST ITEMS
+       ============================================ */
+    .email-item {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .email-item:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+    }
+
+    .email-item.unread {
+        border-left: 3px solid var(--accent);
+    }
+
+    .email-item-from {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+
+    .email-item-subject {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .email-item-time {
+        font-size: 11px;
+        color: var(--text-secondary);
+    }
+
+    .new-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: var(--accent);
+        color: #000;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+    }
+
+    /* ============================================
+       EMPTY INBOX STATE
+       ============================================ */
+    .empty-inbox {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+    }
+
+    .empty-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+        opacity: 0.5;
+    }
+
+    .empty-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+    }
+
+    /* ============================================
+       EMAIL VIEWER (when reading email)
+       ============================================ */
+    .email-viewer {
+        display: none;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+    }
+
+    .email-viewer.visible {
+        display: block;
+    }
+
+    .email-viewer-header {
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+    .email-viewer-subject {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .email-viewer-from {
+        font-size: 13px;
+        color: var(--text-secondary);
+    }
+
+    .email-viewer-body {
+        width: 100%;
+        min-height: 300px;
+        border: none;
+        border-radius: 8px;
+        background: var(--bg-card);
+    }
+
+    /* ============================================
+       LOADING SPINNER
+       ============================================ */
+    .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        gap: 10px;
+        color: var(--text-secondary);
+    }
+
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* ============================================
+       TOAST NOTIFICATIONS
+       ============================================ */
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: var(--bg-card);
+        color: var(--text-primary);
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease;
+        z-index: 999;
+        white-space: nowrap;
+    }
+
+    .toast.show {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    /* ============================================
+       AD BLOCKER NOTICE
+       ============================================ */
+    .adblock-notice {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+        display: none;
+        font-size: 13px;
+        color: var(--text-secondary);
+        text-align: center;
+    }
+
+    .adblock-notice.visible {
+        display: block;
+    }
+
+    /* ============================================
+       BOTTOM AD BANNER
+       ============================================ */
+    .ad-banner-bottom {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border);
+        padding: 10px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--text-secondary);
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    /* ============================================
+       KEYBOARD SHORTCUTS HINT
+       ============================================ */
+    .shortcuts-hint {
+        text-align: center;
+        font-size: 11px;
+        color: var(--text-secondary);
+        margin-top: 20px;
+        padding: 10px;
+    }
+
+    .shortcut-key {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-family: monospace;
+        font-size: 11px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        border-top: 1px solid var(--border);
+        margin-top: 20px;
+    }
+
+    .footer a {
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    margin: 6px 8px;
+}
+
+    /* ============================================
+       RESPONSIVE - MOBILE FIRST
+       ============================================ */
+    @media (max-width: 480px) {
+        .email-display {
+            font-size: 14px;
+        }
+        .otp-code {
+            font-size: 36px;
+            letter-spacing: 4px;
+        }
+        .email-actions {
+            justify-content: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <!-- Everything visible on screen goes here -->
+<!-- ============================================
+     HONEYPOT - Hidden field to catch bots
+     Real users never see or fill this
+     ============================================ -->
+<div style="display:none">
+    <input type="text" id="honeypot" tabindex="-1">
+</div>
+
+<!-- ============================================
+     TOAST NOTIFICATION
+     Shows messages like "Copied!"
+     ============================================ -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================================
+     TOP NAVIGATION BAR
+     ============================================ -->
+<nav class="navbar">
+    <div class="logo">Temp<span>Mail</span></div>
+    <div class="nav-actions">
+        <!-- Theme toggle button -->
+        <button class="btn-icon" id="themeToggle" title="Toggle theme">
+            🌙
+        </button>
+        <!-- Keyboard shortcuts button -->
+        <button class="btn-icon" id="shortcutsBtn" title="Shortcuts">
+            ⌨️
+        </button>
+    </div>
+</nav>
+
+<!-- ============================================
+     TOP AD BANNER
+     Replace comment with your Coinzilla code
+     ============================================ -->
+<div class="ad-banner-top" id="adTop">
+    <!-- PASTE YOUR COINZILLA AD CODE HERE -->
+    <span>Advertisement</span>
+</div>
+
+<!-- ============================================
+     AD BLOCKER NOTICE
+     Shows only if ad blocker detected
+     ============================================ -->
+<div class="adblock-notice" id="adblockNotice">
+    🛡️ We noticed you use an ad blocker.
+    Our service is completely free.
+    Ads keep us running. Please consider
+    whitelisting us or
+    <a href="https://ko-fi.com/YOURNAME"
+       style="color:var(--accent)">
+       buying us a coffee ☕
+    </a>
+</div>
+
+<!-- ============================================
+     MAIN CONTENT AREA
+     ============================================ -->
+<div class="container">
+
+    <!-- API STATUS INDICATOR -->
+    <div class="api-status">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Connecting...</span>
+    </div>
+
+    <!-- ==========================================
+         EMAIL ADDRESS CARD
+         ========================================== -->
+    <div class="email-card">
+        <div class="email-label">
+            📧 Your Temporary Email Address
+        </div>
+
+        <!-- The generated email address shows here -->
+        <div class="email-display" id="emailDisplay">
+            Generating your address...
+        </div>
+
+        <!-- TIMER -->
+        <div class="timer-section">
+            <div>
+                <div class="timer-label">Expires in</div>
+                <div class="timer-display" id="timerDisplay">
+                    10:00
+                </div>
+            </div>
+            <button class="btn btn-secondary"
+                    id="extendBtn"
+                    title="Extend time">
+                ⏱️ Extend
+            </button>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="email-actions">
+            <button class="btn btn-primary" id="copyBtn">
+                📋 Copy
+            </button>
+            <button class="btn btn-secondary" id="qrBtn">
+                📱 QR Code
+            </button>
+            <button class="btn btn-secondary" id="refreshBtn">
+                🔄 Refresh
+            </button>
+            <button class="btn btn-danger" id="newBtn">
+                🗑️ New Address
+            </button>
+        </div>
+
+        <!-- QR CODE SECTION -->
+        <!-- Shows when user taps QR button -->
+        <div class="qr-section" id="qrSection">
+            <img id="qrImage" src="" alt="QR Code"
+                 width="180" height="180">
+            <p style="margin-top:10px;
+                      font-size:12px;
+                      color:var(--text-secondary)">
+                Scan to open inbox on another device
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         OTP EXTRACTOR BANNER
+         Shows automatically when OTP detected
+         ========================================== -->
+    <div class="otp-banner" id="otpBanner">
+        <div class="otp-label">
+            🔑 Verification Code Detected
+        </div>
+        <div class="otp-code" id="otpCode">
+            ------
+        </div>
+        <button class="btn btn-primary" id="copyOtpBtn">
+            📋 Copy Code
+        </button>
+    </div>
+
+    <!-- ==========================================
+         VPN AFFILIATE BANNER
+         Natural placement, not intrusive
+         ========================================== -->
+    <div style="background:var(--bg-card);
+                border:1px solid var(--border);
+                border-radius:12px;
+                padding:14px 18px;
+                margin-bottom:20px;
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                flex-wrap:wrap;
+                gap:10px;">
+        <div>
+            <div style="font-size:13px;
+                        font-weight:600;
+                        margin-bottom:3px;">
+                🔒 Stay private beyond email
+            </div>
+            <div style="font-size:12px;
+                        color:var(--text-secondary)">
+                Protect your browsing too
+            </div>
+        </div>
+        <!-- Replace # with your NordVPN affiliate link -->
+        <a href="#"
+           target="_blank"
+           class="btn btn-secondary"
+           style="font-size:12px;text-decoration:none">
+            Try NordVPN →
+        </a>
+    </div>
+
+    <!-- ==========================================
+         INBOX SECTION
+         ========================================== -->
+    <div id="inboxSection">
+
+        <div class="inbox-header">
+            <div>
+                <span class="inbox-title">Inbox</span>
+                <span class="inbox-count" id="inboxCount">0</span>
+            </div>
+            <button class="btn btn-secondary"
+                    id="manualRefreshBtn"
+                    style="font-size:12px">
+                🔄 Check Now
+            </button>
+        </div>
+
+        <!-- Loading state -->
+        <div class="loading" id="loadingState">
+            <div class="spinner"></div>
+            <span>Waiting for emails...</span>
+        </div>
+
+        <!-- Email list renders here -->
+        <div id="emailList"></div>
+
+        <!-- Empty state -->
+        <div class="empty-inbox" id="emptyState"
+             style="display:none">
+            <div class="empty-icon">📭</div>
+            <div class="empty-title">
+                Inbox is empty
+            </div>
+            <div style="font-size:14px">
+                Emails sent to your address
+                will appear here automatically
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         EMAIL VIEWER
+         Shows when user opens an email
+         ========================================== -->
+    <div class="email-viewer" id="emailViewer">
+        <div class="email-viewer-header">
+            <button class="btn btn-secondary"
+                    id="backBtn"
+                    style="margin-bottom:15px;
+                           font-size:12px">
+                ← Back to Inbox
+            </button>
+            <div class="email-viewer-subject"
+                 id="viewerSubject">
+            </div>
+            <div class="email-viewer-from"
+                 id="viewerFrom">
+            </div>
+        </div>
+        <!-- Sandboxed iframe for safe email display -->
+        <!-- Prevents XSS attacks from email content -->
+        <iframe class="email-viewer-body"
+                id="emailFrame"
+                sandbox="allow-same-origin"
+                srcdoc="">
+        </iframe>
+    </div>
+
+    <!-- ==========================================
+         KEYBOARD SHORTCUTS HINT
+         ========================================== -->
+    <div class="shortcuts-hint">
+        <span class="shortcut-key">C</span> Copy &nbsp;
+        <span class="shortcut-key">R</span> Refresh &nbsp;
+        <span class="shortcut-key">N</span> New &nbsp;
+        <span class="shortcut-key">Q</span> QR Code &nbsp;
+        <span class="shortcut-key">Esc</span> Close email
+    </div>
+
+    <!-- ==========================================
+         BOTTOM AD BANNER
+         ========================================== -->
+    <div class="ad-banner-bottom" id="adBottom">
+        <!-- PASTE YOUR COINZILLA AD CODE HERE -->
+        <span>Advertisement</span>
+    </div>
+
+    <!-- ==========================================
+         FOOTER LINKS
+         ========================================== -->
+    
+        <div class="footer">
+    <div>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/about.html">About</a>
+        <a href="/faq.html">FAQ</a>
+    </div>
+
+    <div style="margin-top:12px;">
+        <a href="https://ko-fi.com/YOURNAME" target="_blank">
+            ☕ Support Us
+        </a>
+    </div>
+
+    <br>
+
+    <span>Zero tracking. Zero cookies. Zero logs.</span>
+</div>
+    
+
+</div>
+<script>
+// ============================================
+// CONFIGURATION
+// Easy to change settings in one place
+// ============================================
+const CONFIG = {
+    // How long email lasts (seconds)
+    emailExpiry: 600, // 10 minutes
+
+    // How many times user can extend
+    maxExtensions: 3,
+
+    // Polling intervals (milliseconds)
+    pollActive: 5000,    // 5 sec when user active
+    pollIdle: 30000,     // 30 sec when idle
+    pollHidden: 60000,   // 60 sec when tab hidden
+
+    // How long until user is considered idle
+    idleTimeout: 60000,  // 1 minute
+
+    // API timeout (milliseconds)
+    apiTimeout: 5000,
+};
+
+// ============================================
+// STATE - All app data lives here
+// ============================================
+let state = {
+    // Current email address
+    email: null,
+
+    // Login name part (before @)
+    emailLogin: null,
+
+    // Domain part (after @)
+    emailDomain: null,
+
+    // API session token (memory only, never stored)
+    token: null,
+
+    // Which API we are using right now
+    currentAPI: 'guerrilla',
+
+    // List of emails in inbox
+    messages: [],
+
+    // Timer related
+    timeLeft: CONFIG.emailExpiry,
+    extensions: 0,
+    timerInterval: null,
+
+    // Polling related
+    pollInterval: null,
+    isIdle: false,
+    idleTimer: null,
+
+    // Currently open email id
+    openEmailId: null,
+
+    // API health status
+    apiHealth: {
+        guerrilla: true,
+        onesecmail: true,
+    },
+};
+
+// ============================================
+// UTILITY FUNCTIONS
+// Small helper functions used everywhere
+// ============================================
+
+// Show a toast notification
+function showToast(message, type = '') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => {
+        toast.className = 'toast';
+    }, 3000);
+}
+
+// Update the API status indicator
+function updateStatus(text, isError = false) {
+    document.getElementById('statusText').textContent = text;
+    const dot = document.getElementById('statusDot');
+    dot.className = 'status-dot' + (isError ? ' error' : '');
+}
+
+// Format seconds into MM:SS display
+function formatTime(seconds) {
+    const m = Math.floor(seconds / 60)
+        .toString().padStart(2, '0');
+    const s = (seconds % 60)
+        .toString().padStart(2, '0');
+    return m + ':' + s;
+}
+
+// Extract OTP/verification code from email text
+function extractOTP(text) {
+    // Look for 4-8 digit numbers in email content
+    const patterns = [
+        /\b(\d{6})\b/,  // 6 digits (most common)
+        /\b(\d{4})\b/,  // 4 digits
+        /\b(\d{8})\b/,  // 8 digits
+        // Look for "code: 123456" pattern
+        /code[:\s]+(\d{4,8})/i,
+        // Look for "OTP: 123456" pattern
+        /otp[:\s]+(\d{4,8})/i,
+        // Look for "verify: 123456" pattern
+        /verif\w*[:\s]+(\d{4,8})/i,
+    ];
+
+    for (const pattern of patterns) {
+        const match = text.match(pattern);
+        if (match) return match[1];
+    }
+    return null;
+}
+
+// Show OTP banner if code found
+function checkAndShowOTP(emailBody) {
+    // Strip HTML tags to get plain text
+    const plainText = emailBody.replace(/<[^>]*>/g, ' ');
+    const otp = extractOTP(plainText);
+
+    if (otp) {
+        document.getElementById('otpCode').textContent = otp;
+        document.getElementById('otpBanner')
+            .classList.add('visible');
+    } else {
+        document.getElementById('otpBanner')
+            .classList.remove('visible');
+    }
+}
+
+// Sanitize HTML to prevent XSS attacks
+// Removes dangerous tags and scripts
+function sanitizeHTML(html) {
+    // Create a sandboxed element
+    const div = document.createElement('div');
+    div.innerHTML = html;
+
+    // Remove dangerous elements
+    const dangerous = div.querySelectorAll(
+        'script, iframe, object, embed, form, input'
+    );
+    dangerous.forEach(el => el.remove());
+
+    // Remove dangerous attributes from all elements
+    div.querySelectorAll('*').forEach(el => {
+        // Remove event handlers (onclick, onload etc)
+        Array.from(el.attributes).forEach(attr => {
+            if (attr.name.startsWith('on') ||
+                attr.value.startsWith('javascript:')) {
+                el.removeAttribute(attr.name);
+            }
+        });
+    });
+
+    return div.innerHTML;
+}
+
+// Save session to sessionStorage
+function saveSession() {
+    if (state.email) {
+        sessionStorage.setItem('tmpmail_session',
+            JSON.stringify({
+                email: state.email,
+                login: state.emailLogin,
+                domain: state.emailDomain,
+                timeLeft: state.timeLeft,
+                extensions: state.extensions,
+                api: state.currentAPI,
+            })
+        );
+        // Also save email to URL hash as backup
+        window.location.hash = btoa(state.email);
+    }
+}
+
+// Load session from sessionStorage
+function loadSession() {
+    try {
+        const saved = sessionStorage.getItem('tmpmail_session');
+        if (saved) {
+            const data = JSON.parse(saved);
+            // Only restore if still has time left
+            if (data.timeLeft > 10) {
+                return data;
+            }
+        }
+    } catch(e) {}
+    return null;
+}
+
+// ============================================
+// GUERRILLA MAIL API
+// Primary email provider
+// ============================================
+const GuerrillaAPI = {
+
+    // Get a new email address
+    async getEmail() {
+        const url = 'https://api.guerrillamail.com' +
+            '/ajax.php?f=get_email_address';
+        const res = await fetch(url);
+        const data = await res.json();
+
+        // Store token in memory only (never in storage)
+        state.token = data.sid_token;
+
+        return {
+            email: data.email_addr,
+            login: data.email_addr.split('@')[0],
+            domain: data.email_addr.split('@')[1],
+        };
+    },
+
+    // Get list of emails in inbox
+    async getMessages() {
+        if (!state.token) return [];
+        const url = 'https://api.guerrillamail.com' +
+            '/ajax.php?f=get_email_list' +
+            '&offset=0' +
+            '&sid_token=' + state.token;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        // Update token
+        if (data.sid_token) {
+            state.token = data.sid_token;
+        }
+
+        return (data.list || []).map(msg => ({
+            id: msg.mail_id,
+            from: msg.mail_from,
+            subject: msg.mail_subject,
+            time: msg.mail_date,
+            read: msg.mail_read === '1',
+            body: msg.mail_excerpt || '',
+        }));
+    },
+
+    // Get full email content
+    async getMessage(id) {
+        const url = 'https://api.guerrillamail.com' +
+            '/ajax.php?f=fetch_email' +
+            '&email_id=' + id +
+            '&sid_token=' + state.token;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        return {
+            id: data.mail_id,
+            from: data.mail_from,
+            subject: data.mail_subject,
+            body: data.mail_body || data.mail_excerpt || '',
+            time: data.mail_date,
+        };
+    },
+};
+
+// ============================================
+// 1SECMAIL API
+// Backup email provider
+// ============================================
+const OneSecAPI = {
+
+    // Get a new email address
+    async getEmail() {
+        const url = 'https://www.1secmail.com/api/v1/' +
+            '?action=genRandomMailbox&count=1';
+        const res = await fetch(url);
+        const data = await res.json();
+        const full = data[0];
+        const parts = full.split('@');
+
+        return {
+            email: full,
+            login: parts[0],
+            domain: parts[1],
+        };
+    },
+
+    // Get list of emails in inbox
+    async getMessages() {
+        if (!state.emailLogin || !state.emailDomain) return [];
+        const url = 'https://www.1secmail.com/api/v1/' +
+            '?action=getMessages' +
+            '&login=' + state.emailLogin +
+            '&domain=' + state.emailDomain;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        return (data || []).map(msg => ({
+            id: msg.id,
+            from: msg.from,
+            subject: msg.subject,
+            time: msg.date,
+            read: false,
+            body: '',
+        }));
+    },
+
+    // Get full email content
+    async getMessage(id) {
+        const url = 'https://www.1secmail.com/api/v1/' +
+            '?action=readMessage' +
+            '&login=' + state.emailLogin +
+            '&domain=' + state.emailDomain +
+            '&id=' + id;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        return {
+            id: data.id,
+            from: data.from,
+            subject: data.subject,
+            body: data.htmlBody || data.textBody || '',
+            time: data.date,
+        };
+    },
+};
+
+// ============================================
+// API MANAGER
+// Handles switching between APIs automatically
+// ============================================
+const API = {
+
+    // Get current active API
+    current() {
+        return state.currentAPI === 'guerrilla'
+            ? GuerrillaAPI
+            : OneSecAPI;
+    },
+
+    // Switch to next working API
+    switchAPI() {
+        if (state.currentAPI === 'guerrilla' &&
+            state.apiHealth.onesecmail) {
+            state.currentAPI = 'onesecmail';
+            updateStatus('Switched to backup provider');
+            showToast('⚡ Switched to backup provider');
+        } else if (state.currentAPI === 'onesecmail' &&
+                   state.apiHealth.guerrilla) {
+            state.currentAPI = 'guerrilla';
+            updateStatus('Switched to primary provider');
+        } else {
+            updateStatus('All providers busy', true);
+            showToast('⚠️ All providers busy, retrying...');
+        }
+    },
+
+    // Health check all APIs
+    async healthCheck() {
+        // Check Guerrilla Mail
+        try {
+            const res = await fetch(
+                'https://api.guerrillamail.com/ajax.php' +
+                '?f=get_email_address',
+                { signal: AbortSignal.timeout(5000) }
+            );
+            state.apiHealth.guerrilla = res.ok;
+        } catch(e) {
+            state.apiHealth.guerrilla = false;
+        }
+
+        // Check 1secmail
+        try {
+            const res = await fetch(
+                'https://www.1secmail.com/api/v1/' +
+                '?action=genRandomMailbox&count=1',
+                { signal: AbortSignal.timeout(5000) }
+            );
+            state.apiHealth.onesecmail = res.ok;
+        } catch(e) {
+            state.apiHealth.onesecmail = false;
+        }
+    },
+
+    // Get new email with fallback
+    async getEmail() {
+        try {
+            const result = await this.current().getEmail();
+            return result;
+        } catch(e) {
+            this.switchAPI();
+            try {
+                return await this.current().getEmail();
+            } catch(e2) {
+                throw new Error('All APIs failed');
+            }
+        }
+    },
+
+    // Get messages with fallback
+    async getMessages() {
+        try {
+            return await this.current().getMessages();
+        } catch(e) {
+            this.switchAPI();
+            try {
+                return await this.current().getMessages();
+            } catch(e2) {
+                return [];
+            }
+        }
+    },
+
+    // Get single message with fallback
+    async getMessage(id) {
+        try {
+            return await this.current().getMessage(id);
+        } catch(e) {
+            return null;
+        }
+    },
+};
+
+// ============================================
+// TIMER FUNCTIONS
+// Countdown timer with extend feature
+// ============================================
+function startTimer() {
+    // Clear any existing timer
+    if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+    }
+
+    state.timerInterval = setInterval(() => {
+        state.timeLeft--;
+
+        // Update display
+        const display = document.getElementById('timerDisplay');
+        display.textContent = formatTime(state.timeLeft);
+
+        // Turn red when under 2 minutes
+        if (state.timeLeft < 120) {
+            display.classList.add('urgent');
+        }
+
+        // Save session with updated time
+        saveSession();
+
+        // Timer expired
+        if (state.timeLeft <= 0) {
+            clearInterval(state.timerInterval);
+            showToast('⏰ Email expired. Getting new address...');
+            setTimeout(() => generateEmail(), 2000);
+        }
+    }, 1000);
+}
+
+function extendTimer() {
+    if (state.extensions >= CONFIG.maxExtensions) {
+        showToast('⚠️ Maximum extensions reached');
+        return;
+    }
+    state.extensions++;
+    state.timeLeft += 600; // Add 10 minutes
+    document.getElementById('timerDisplay')
+        .classList.remove('urgent');
+    showToast(
+        '⏱️ Extended! ' +
+        (CONFIG.maxExtensions - state.extensions) +
+        ' extensions remaining',
+        'success'
+    );
+}
+
+// ============================================
+// EMAIL GENERATION
+// Creates new temporary email address
+// ============================================
+async function generateEmail(forceNew = false) {
+    // Check honeypot (bot protection)
+    if (document.getElementById('honeypot').value !== '') {
+        return; // Bot detected, do nothing
+    }
+
+    // Show loading state
+    document.getElementById('emailDisplay').textContent =
+        'Generating your address...';
+    updateStatus('Getting email address...');
+
+    // Try to restore session first (unless forced new)
+    if (!forceNew) {
+        const saved = loadSession();
+        if (saved) {
+            state.email = saved.email;
+            state.emailLogin = saved.login;
+            state.emailDomain = saved.domain;
+            state.timeLeft = saved.timeLeft;
+            state.extensions = saved.extensions;
+            state.currentAPI = saved.api || 'guerrilla';
+
+            document.getElementById('emailDisplay')
+                .textContent = state.email;
+            updateStatus(
+                'Connected via ' + state.currentAPI
+            );
+            startTimer();
+            startPolling();
+            generateQR();
+            showToast('✅ Session restored', 'success');
+            return;
+        }
+    }
+
+    try {
+        // Get new email from API
+        const result = await API.getEmail();
+
+        state.email = result.email;
+        state.emailLogin = result.login;
+        state.emailDomain = result.domain;
+        state.timeLeft = CONFIG.emailExpiry;
+        state.extensions = 0;
+        state.messages = [];
+
+        // Update display
+        document.getElementById('emailDisplay')
+            .textContent = state.email;
+        updateStatus('Connected via ' + state.currentAPI);
+
+        // Auto copy to clipboard
+        copyEmail();
+
+        // Save session
+        saveSession();
+
+        // Generate QR code
+        generateQR();
+
+        // Start timer and polling
+        startTimer();
+        startPolling();
+
+        // Show inbox empty state
+        showEmptyState();
+
+    } catch(e) {
+        updateStatus('Connection failed', true);
+        document.getElementById('emailDisplay')
+            .textContent = 'Failed to generate address';
+        showToast('❌ Failed to connect. Retrying....');
+        // Retry after 5 seconds
+        setTimeout(() => generateEmail(), 5000);
+    }
+}
+
+// ============================================
+// QR CODE GENERATION
+// Uses free QR API, no library needed
+// ============================================
+function generateQR() {
+    if (!state.email) return;
+    const encoded = encodeURIComponent(state.email);
+    const qrUrl = 'https://api.qrserver.com/v1/' +
+        'create-qr-code/?' +
+        'size=180x180&' +
+        'data=' + encoded +
+        '&bgcolor=0f0f0f&' +
+        'color=00d4aa&' +
+        'margin=10';
+    document.getElementById('qrImage').src = qrUrl;
+}
+
+// ============================================
+// COPY EMAIL TO CLIPBOARD
+// ============================================
+function copyEmail() {
+    if (!state.email) return;
+    navigator.clipboard.writeText(state.email)
+        .then(() => {
+            showToast('📋 Copied to clipboard!', 'success');
+        })
+        .catch(() => {
+            // Fallback for older browsers
+            const el = document.createElement('textarea');
+            el.value = state.email;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('📋 Copied!', 'success');
+        });
+}
+
+// ============================================
+// INBOX RENDERING
+// Displays emails in the inbox list
+// ============================================
+function renderInbox(messages) {
+    const list = document.getElementById('emailList');
+    const empty = document.getElementById('emptyState');
+    const loading = document.getElementById('loadingState');
+    const count = document.getElementById('inboxCount');
+
+    // Hide loading
+    loading.style.display = 'none';
+
+    // Update count badge
+    count.textContent = messages.length;
+
+    if (messages.length === 0) {
+        list.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+
+    empty.style.display = 'none';
+
+    // Build email list HTML
+    list.innerHTML = messages.map(msg => `
+        <div class="email-item ${msg.read ? '' : 'unread'}"
+             onclick="openEmail('${msg.id}')">
+            ${!msg.read
+                ? '<div class="new-badge">NEW</div>'
+                : ''
+            }
+            <div class="email-item-from">
+                ${escapeHtml(msg.from)}
+            </div>
+            <div class="email-item-subject">
+                ${escapeHtml(msg.subject || '(no subject)')}
+            </div>
+            <div class="email-item-time">
+                ${msg.time}
+            </div>
+        </div>
+    `).join('');
+}
+
+// Escape HTML to prevent XSS in list view
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+
+function showEmptyState() {
+    document.getElementById('loadingState')
+        .style.display = 'none';
+    document.getElementById('emptyState')
+        .style.display = 'block';
+    document.getElementById('inboxCount')
+        .textContent = '0';
+}
+
+// ============================================
+// OPEN AND READ EMAIL
+// ============================================
+async function openEmail(id) {
+    state.openEmailId = id;
+
+    // Hide inbox show viewer
+    document.getElementById('inboxSection')
+        .style.display = 'none';
+    document.getElementById('emailViewer')
+        .classList.add('visible');
+
+    // Show loading in viewer
+    document.getElementById('viewerSubject')
+        .textContent = 'Loading...';
+    document.getElementById('viewerFrom')
+        .textContent = '';
+    document.getElementById('emailFrame')
+        .srcdoc = '<p style="color:#aaa;padding:20px">' +
+                  'Loading email...</p>';
+
+    try {
+        const email = await API.getMessage(id);
+
+        if (!email) throw new Error('Failed to load');
+
+        // Update viewer header
+        document.getElementById('viewerSubject')
+            .textContent = email.subject || '(no subject)';
+        document.getElementById('viewerFrom')
+            .textContent = 'From: ' + email.from;
+
+        // Sanitize then display in sandboxed iframe
+        const safeHTML = sanitizeHTML(email.body);
+        const styledHTML = `
+            <style>
+                body {
+                    font-family: -apple-system,
+                        BlinkMacSystemFont, sans-serif;
+                    padding: 20px;
+                    color: #ffffff;
+                    background: #242424;
+                    font-size: 14px;
+                    line-height: 1.6;
+                }
+                a { color: #00d4aa; }
+                img { max-width: 100%; }
+            </style>
+            ${safeHTML}
+        `;
+        document.getElementById('emailFrame')
+            .srcdoc = styledHTML;
+
+        // Check for OTP in email body
+        checkAndShowOTP(email.body);
+
+        // Mark as read in our state
+        const msg = state.messages
+            .find(m => m.id == id);
+        if (msg) msg.read = true;
+
+    } catch(e) {
+        document.getElementById('emailFrame')
+            .srcdoc = '<p style="color:#ff6b6b;' +
+                      'padding:20px">Failed to load email</p>';
+    }
+}
+
+// Go back to inbox from email viewer
+function closeEmail() {
+    state.openEmailId = null;
+    document.getElementById('inboxSection')
+        .style.display = 'block';
+    document.getElementById('emailViewer')
+        .classList.remove('visible');
+    document.getElementById('otpBanner')
+        .classList.remove('visible');
+}
+
+// ============================================
+// POLLING
+// Auto checks for new emails
+// ============================================
+function startPolling() {
+    if (state.pollInterval) {
+        clearInterval(state.pollInterval);
+    }
+
+    // Poll immediately first
+    fetchMessages();
+
+    // Then poll on interval
+    state.pollInterval = setInterval(() => {
+        // Determine polling speed based on activity
+        const interval = document.hidden
+            ? CONFIG.pollHidden
+            : state.isIdle
+                ? CONFIG.pollIdle
+                : CONFIG.pollActive;
+
+        fetchMessages();
+
+        // Restart with correct interval if needed
+        clearInterval(state.pollInterval);
+        state.pollInterval = setInterval(
+            fetchMessages, interval
+        );
+
+    }, CONFIG.pollActive);
+}
+
+async function fetchMessages() {
+    if (!state.email) return;
+
+    try {
+        const messages = await API.getMessages();
+
+        // Check for new messages
+        const newCount = messages.filter(m =>
+            !state.messages.find(old => old.id === m.id)
+        ).length;
+
+        if (newCount > 0) {
+            showToast(
+                '📬 ' + newCount + ' new email' +
+                (newCount > 1 ? 's' : '') + '!',
+                'success'
+            );
+        }
+
+        state.messages = messages;
+        renderInbox(messages);
+        updateStatus(
+            'Connected · Last checked just now'
+        );
+
+    } catch(e) {
+        updateStatus('Checking failed, retrying...', true);
+    }
+}
+
+// ============================================
+// IDLE DETECTION
+// Slows polling when user is not active
+// ============================================
+function resetIdleTimer() {
+    state.isIdle = false;
+    clearTimeout(state.idleTimer);
+    state.idleTimer = setTimeout(() => {
+        state.isIdle = true;
+    }, CONFIG.idleTimeout);
+}
+
+// Listen for user activity
+['mousemove', 'keypress', 'scroll', 'touchstart']
+    .forEach(event => {
+        document.addEventListener(event, resetIdleTimer);
+    });
+
+// ============================================
+// THEME TOGGLE
+// Dark mode / Light mode
+// ============================================
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body
+        .classList.contains('light-mode');
+    document.getElementById('themeToggle')
+        .textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem(
+        'tmpmail_theme', isLight ? 'light' : 'dark'
+    );
+}
+
+function loadTheme() {
+    const saved = localStorage.getItem('tmpmail_theme');
+    if (saved === 'light') {
+        document.body.classList.add('light-mode');
+        document.getElementById('themeToggle')
+            .textContent = '☀️';
+    }
+}
+
+// ============================================
+// AD BLOCK DETECTION
+// ============================================
+function detectAdBlock() {
+    const testAd = document.createElement('div');
+    testAd.innerHTML = '&nbsp;';
+    testAd.className = 'adsbox ad ads';
+    testAd.style.cssText =
+        'position:absolute;top:-999px';
+    document.body.appendChild(testAd);
+
+    setTimeout(() => {
+        const blocked =
+            testAd.offsetHeight === 0;
+        document.body.removeChild(testAd);
+        if (blocked) {
+            document.getElementById('adblockNotice')
+                .classList.add('visible');
+        }
+    }, 100);
+}
+
+// ============================================
+// KEYBOARD SHORTCUTS
+// ============================================
+document.addEventListener('keydown', (e) => {
+    // Do not trigger when typing in input
+    if (e.target.tagName === 'INPUT') return;
+
+    switch(e.key.toLowerCase()) {
+        case 'c':
+            copyEmail();
+            break;
+        case 'r':
+            fetchMessages();
+            showToast('🔄 Refreshing...');
+            break;
+        case 'n':
+            if (confirm(
+                'Get a new address? Current inbox will be lost.'
+            )) {
+                generateEmail(true);
+            }
+            break;
+        case 'q':
+            document.getElementById('qrBtn').click();
+            break;
+        case 'escape':
+            if (state.openEmailId) closeEmail();
+            break;
+    }
+});
+
+// ============================================
+// WARN BEFORE PAGE CLOSE
+// ============================================
+window.addEventListener('beforeunload', (e) => {
+    if (state.email) {
+        e.preventDefault();
+        e.returnValue =
+            'Your inbox will be lost if you leave!';
+    }
+});
+
+// ============================================
+// BUTTON EVENT LISTENERS
+// ============================================
+
+// Copy email button
+document.getElementById('copyBtn')
+    .addEventListener('click', copyEmail);
+
+// QR code toggle button
+document.getElementById('qrBtn')
+    .addEventListener('click', () => {
+        const qr = document.getElementById('qrSection');
+        qr.classList.toggle('visible');
+    });
+
+// Refresh inbox button
+document.getElementById('refreshBtn')
+    .addEventListener('click', () => {
+        fetchMessages();
+        showToast('🔄 Refreshing inbox...');
+    });
+
+// Manual refresh button
+document.getElementById('manualRefreshBtn')
+    .addEventListener('click', () => {
+        fetchMessages();
+        showToast('🔄 Checking for emails...');
+    });
+
+// New address button
+document.getElementById('newBtn')
+    .addEventListener('click', () => {
+        if (confirm(
+            'Get a new address? Current inbox will be lost.'
+        )) {
+            // Clear session
+            sessionStorage.removeItem('tmpmail_session');
+            window.location.hash = '';
+            state.token = null;
+            generateEmail(true);
+        }
+    });
+
+// Extend timer button
+document.getElementById('extendBtn')
+    .addEventListener('click', extendTimer);
+
+// Back button in email viewer
+document.getElementById('backBtn')
+    .addEventListener('click', closeEmail);
+
+// Copy OTP button
+document.getElementById('copyOtpBtn')
+    .addEventListener('click', () => {
+        const code = document.getElementById('otpCode')
+            .textContent;
+        navigator.clipboard.writeText(code)
+            .then(() => showToast(
+                '📋 Code copied!', 'success'
+            ));
+    });
+
+// Theme toggle button
+document.getElementById('themeToggle')
+    .addEventListener('click', toggleTheme);
+
+// ============================================
+// HEALTH CHECK
+// Runs every 30 seconds in background
+// ============================================
+setInterval(() => {
+    API.healthCheck();
+}, 30000);
+
+// ============================================
+// START THE APP
+// Everything begins here
+// ============================================
+function init() {
+    // Load saved theme preference
+    loadTheme();
+
+    // Check for ad blockers
+    detectAdBlock();
+
+    // Run initial health check
+    API.healthCheck();
+
+    // Generate or restore email
+    generateEmail();
+
+    // Reset idle timer
+    resetIdleTimer();
+}
+
+// Run when page loads
+window.addEventListener('load', init);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+          content="width=device-width, 
+                   initial-scale=1.0">
+    <title>About - TempMail</title>
+    <style>
+        body {
+            background: #0f0f0f;
+            color: #ffffff;
+            font-family: -apple-system,
+                BlinkMacSystemFont, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 15px;
+            line-height: 1.7;
+        }
+        h1 { color: #00d4aa; margin-bottom: 5px; }
+        h2 { 
+            color: #00d4aa; 
+            font-size: 16px;
+            margin-top: 30px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+        p { color: #aaaaaa; margin-bottom: 15px; }
+        ul { color: #aaaaaa; 
+             margin-bottom: 15px;
+             padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .back {
+            display: inline-block;
+            color: #00d4aa;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .badge {
+            background: #1a1a1a;
+            border: 1px solid #00d4aa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #00d4aa;
+            text-align: center;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .feature-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 13px;
+            color: #aaaaaa;
+        }
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .feature-title {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .honest-box {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #aaaaaa;
+        }
+        a { color: #00d4aa; }
+        strong { color: #ffffff; }
+        @media (max-width: 480px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back">
+        ← Back to TempMail
+    </a>
+
+    <h1>About TempMail</h1>
+    <p style="color:#666;font-size:13px">
+        Free disposable email for everyone
+    </p>
+
+    <div class="badge">
+        🛡️ Zero tracking. Zero cookies.
+        Zero logs. Just temp mail.
+    </div>
+
+    <h2>What Is TempMail</h2>
+    <p>
+        TempMail is a free disposable email
+        service that lets you create temporary
+        email addresses instantly with no
+        registration required. Use it to
+        protect your real inbox from spam,
+        test websites or sign up for services
+        you are not sure about.
+    </p>
+
+    <h2>Why We Built This</h2>
+    <p>
+        Every time you sign up for a website
+        your real email gets added to mailing
+        lists, sold to advertisers and flooded
+        with spam. We built TempMail because
+        everyone deserves the right to browse
+        the internet without giving away
+        their personal information.
+    </p>
+
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">
+                Instant Address
+            </div>
+            No signup. No registration.
+            Get an address in one second.
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🔑</div>
+            <div class="feature-title">
+                OTP Extractor
+            </div>
+            Automatically detects and displays
+            verification codes in huge text.
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">📱</div>
+            <div class="feature-title">
+                QR Code
+            </div>
+            Scan to open your inbox on
+            any other device instantly.
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🔄</div>
+            <div class="feature-title">
+                Auto Refresh
+            </div>
+            Inbox checks automatically
+            every few seconds.
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🌙</div>
+            <div class="feature-title">
+                Dark Mode
+            </div>
+            Easy on the eyes with dark
+            mode on by default.
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">⌨️</div>
+            <div class="feature-title">
+                Keyboard Shortcuts
+            </div>
+            Power user shortcuts for
+            faster workflow.
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🛡️</div>
+            <div class="feature-title">
+                XSS Protection
+            </div>
+            All emails sanitized before
+            display for your safety.
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">⏱️</div>
+            <div class="feature-title">
+                Extendable Timer
+            </div>
+            Extend your inbox time
+            up to 3 times.
+        </div>
+    </div>
+
+    <h2>How It Works</h2>
+    <p>
+        When you visit TempMail we generate
+        a random email address for you using
+        third party email APIs. Any emails
+        sent to that address appear in your
+        inbox automatically. The address
+        expires after a set time and all
+        emails are deleted.
+    </p>
+
+    <h2>Honest Disclaimer</h2>
+    <div class="honest-box">
+        <p style="margin-bottom:10px">
+            <strong>We believe in transparency.
+            Here is exactly how this works:</strong>
+        </p>
+        <ul style="margin:0">
+            <li>
+                We do not own the email servers.
+                Emails are received by Guerrilla Mail
+                and 1secmail on their servers.
+            </li>
+            <li>
+                We are a frontend interface only.
+                We display emails from their APIs
+                in our cleaner interface.
+            </li>
+            <li>
+                We have no backend server of our own.
+                Your session data stays on your
+                device only.
+            </li>
+            <li>
+                Service availability depends on
+                third party providers and may
+                change without notice.
+            </li>
+        </ul>
+    </div>
+
+    <h2>Privacy Commitment</h2>
+    <p>
+        We collect absolutely nothing about you.
+        No IP addresses, no usage logs, no
+        analytics, no tracking cookies. Your
+        session data lives only on your device
+        and is deleted when you close your tab.
+        Read our full
+        <a href="privacy.html">Privacy Policy</a>
+        for complete details.
+    </p>
+
+    <h2>Open Source</h2>
+    <p>
+        TempMail is open source. You can view,
+        inspect and verify our code on GitHub.
+        We believe in transparency especially
+        for a privacy tool. Nothing is hidden.
+        <br><br>
+        <a href="https://github.com/quick-temp-mail"
+           target="_blank">
+            View on GitHub →
+        </a>
+    </p>
+
+    <h2>Support This Project</h2>
+    <p>
+        TempMail is completely free and always
+        will be. If it helped you consider
+        supporting us to keep the servers
+        running and the service improving.
+    </p>
+    <a href="https://ko-fi.com/tempmail7"
+       target="_blank"
+       style="display:inline-block;
+              background:#00d4aa;
+              color:#000;
+              padding:12px 24px;
+              border-radius:8px;
+              text-decoration:none;
+              font-weight:600;
+              margin-bottom:25px">
+        ☕ Buy Us a Coffee
+    </a>
+
+    <h2>Contact</h2>
+    <p>
+        Questions, suggestions or abuse reports:
+        <br><br>
+        <a href="mailto:quick-disposal-mail@proton.me">
+            quick-disposal-mail@proton.me
+        </a>
+    </p>
+
+</body>
+</html>

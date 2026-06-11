@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+          content="width=device-width, 
+                   initial-scale=1.0">
+    <title>FAQ - TempMail</title>
+    <style>
+        body {
+            background: #0f0f0f;
+            color: #ffffff;
+            font-family: -apple-system,
+                BlinkMacSystemFont, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 15px;
+            line-height: 1.7;
+        }
+        h1 { color: #00d4aa; margin-bottom: 5px; }
+        h2 { 
+            color: #00d4aa; 
+            font-size: 16px;
+            margin-top: 30px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+        p { color: #aaaaaa; margin-bottom: 15px; }
+        .back {
+            display: inline-block;
+            color: #00d4aa;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .faq-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #00d4aa;
+        }
+        .faq-item.open {
+            border-color: #00d4aa;
+        }
+        .faq-question {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-arrow {
+            color: #00d4aa;
+            font-size: 18px;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            display: none;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #aaaaaa;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+        .badge {
+            background: #1a1a1a;
+            border: 1px solid #00d4aa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #00d4aa;
+            text-align: center;
+        }
+        a { color: #00d4aa; }
+        strong { color: #ffffff; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back">
+        ← Back to TempMail
+    </a>
+
+    <h1>Frequently Asked Questions</h1>
+    <p style="color:#666;font-size:13px">
+        Everything you need to know about TempMail
+    </p>
+
+    <div class="badge">
+        💡 Tap any question to see the answer
+    </div>
+
+    <!-- ======================================
+         GENERAL QUESTIONS
+         ====================================== -->
+    <h2>General</h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            What is TempMail?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            TempMail is a free disposable email
+            service. It gives you a temporary
+            email address instantly with no
+            registration required. Use it to
+            protect your real inbox from spam
+            when signing up for websites
+            you are not sure about.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Is TempMail free?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Yes. TempMail is completely free
+            to use. No registration, no payment,
+            no credit card. We keep it free
+            through advertising and optional
+            donations from users who appreciate
+            the service.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Do I need to register or sign up?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            No. You never need to register or
+            create an account. Just visit the
+            site and you instantly get a
+            temporary email address ready to use.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Who owns the email servers?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            We are honest about this. We do not
+            own the email servers. We use third
+            party APIs from Guerrilla Mail and
+            1secmail to receive emails. We are
+            a frontend interface that displays
+            those emails in a cleaner way.
+            This is why the service is free.
+        </div>
+    </div>
+
+    <!-- ======================================
+         USING THE SERVICE
+         ====================================== -->
+    <h2>Using The Service</h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            How long does my email address last?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Your email address lasts 10 minutes
+            by default. You can extend it up to
+            3 times by tapping the Extend button,
+            adding 10 minutes each time for a
+            maximum of 40 minutes total.
+            After expiry a new address
+            is generated automatically.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            What happens if I refresh the page?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            We save your session automatically
+            so refreshing the page should restore
+            your same email address and inbox.
+            However if you close the tab
+            completely your session is deleted
+            for privacy and a new address
+            will be generated next time.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Can I choose my own email address?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Currently addresses are generated
+            randomly. Custom address selection
+            is planned as a future feature.
+            For now tap New Address to generate
+            different random addresses until
+            you get one you like.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Can I use it on multiple devices?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Yes. Use the QR code button to
+            scan your inbox address with another
+            device. This opens the same inbox
+            on the other device. Note that
+            session data is stored per device
+            so both devices need to stay
+            on the page.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            What is the OTP extractor?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            When an email arrives containing
+            a verification code or OTP number
+            our site automatically detects it
+            and displays it in large text at
+            the top of your screen. This saves
+            you from having to open the email
+            and search for the code yourself.
+            Just tap Copy Code to copy it.
+        </div>
+    </div>
+
+    <!-- ======================================
+         TECHNICAL QUESTIONS
+         ====================================== -->
+    <h2>Technical</h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Why is my inbox not updating?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Your inbox refreshes automatically
+            every 5 seconds when you are active.
+            If it seems stuck tap the
+            Check Now button to manually refresh.
+            If the problem continues tap
+            New Address to reset completely.
+            Sometimes the email provider APIs
+            experience temporary delays.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Why did my address change suddenly?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            This happens when your session
+            expires after 10 minutes or when
+            you close and reopen the browser tab.
+            Always copy your address immediately
+            after it is generated. Use the
+            Extend button to get more time
+            before it expires.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Why does the email provider
+            sometimes switch?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            We use multiple email providers
+            for reliability. If our primary
+            provider Guerrilla Mail is slow
+            or unavailable we automatically
+            switch to our backup provider
+            1secmail. You will see a small
+            notification when this happens.
+            This ensures the service keeps
+            working even if one provider
+            has issues.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Is it safe to use TempMail?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            For receiving non sensitive emails
+            yes it is safe. All emails are
+            displayed in a sandboxed environment
+            to protect you from malicious
+            content. However do not use temp
+            mail for sensitive information
+            like banking, passwords or personal
+            documents as the email providers
+            we use may have access to
+            email contents.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Does TempMail track me?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            No. We collect absolutely nothing
+            about you. No IP addresses, no
+            usage logs, no analytics, no
+            tracking cookies. Your session
+            data stays on your device only
+            and is deleted when you close
+            your tab. Read our Privacy Policy
+            for complete details.
+        </div>
+    </div>
+
+    <!-- ======================================
+         PROBLEMS AND LIMITS
+         ====================================== -->
+    <h2>Problems and Limits</h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            A website is not accepting
+            my temp email. Why?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Some websites block known disposable
+            email domains. This is their right
+            and we cannot control it. Try tapping
+            New Address several times to get
+            a different domain. Different domains
+            may work on different websites.
+            We are continuously working to
+            offer more domain options.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Can I send emails with TempMail?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            No. TempMail is receive only.
+            You cannot send emails from your
+            temporary address. It is designed
+            purely for receiving verification
+            emails and avoiding spam.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Can I receive attachments?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            This depends on the email provider.
+            Some attachments may appear and
+            some may not. We recommend not
+            relying on TempMail for receiving
+            important attachments as delivery
+            is not guaranteed.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            The site is not working at all.
+            What should I do?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Try these steps in order:
+            1. Refresh the page.
+            2. Clear your browser cache.
+            3. Try a different browser.
+            4. Check your internet connection.
+            5. Wait a few minutes and try again.
+            If the problem continues the email
+            providers may be temporarily down.
+            This is outside our control but
+            usually resolves within minutes.
+        </div>
+    </div>
+
+    <!-- ======================================
+         LEGAL AND PRIVACY
+         ====================================== -->
+    <h2>Legal and Privacy</h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Is using TempMail legal?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Yes. Using disposable email services
+            is completely legal in most countries.
+            Many legitimate companies offer
+            similar services. However you must
+            not use TempMail for illegal
+            activities. See our Terms of Service
+            for prohibited uses.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            Does TempMail comply with GDPR?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            Since we collect no personal data
+            ourselves our GDPR obligations are
+            minimal. We have no database of
+            user information to protect or
+            delete. Third party email providers
+            we use have their own GDPR policies.
+            See our Privacy Policy for
+            full details.
+        </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+            How do I report abuse?
+            <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+            If you believe this service is
+            being used for illegal or abusive
+            purposes please email us at:
+            quick-disposal-mail@proton.me
+            We take abuse seriously and will
+            cooperate with law enforcement
+            when legally required.
+        </div>
+    </div>
+
+    <br>
+    <p style="text-align:center;font-size:13px">
+        Still have questions?
+        <a href="mailto:quick-disposal-mail@proton.me">
+            Contact us
+        </a>
+    </p>
+
+</body>
+
+<script>
+    // Toggle FAQ open and closed
+    function toggleFaq(item) {
+        // Close all others
+        document.querySelectorAll('.faq-item')
+            .forEach(el => {
+                if (el !== item) {
+                    el.classList.remove('open');
+                }
+            });
+        // Toggle this one
+        item.classList.toggle('open');
+    }
+</script>
+
+</html>
