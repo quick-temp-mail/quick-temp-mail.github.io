@@ -632,7 +632,6 @@
         }
     }
 </style>
-    <meta name="google-site-verification" content="YJTllYuqUOqadsGl68VHyW6Mv7Y4EmdGWEeB6aE5CXM" />
 </head>
 <body>
 
@@ -912,7 +911,7 @@
     </div>
 
     <div style="margin-top:12px;">
-        <a href="https://ko-fi.com/tempmail7" target="_blank">
+        <a href="https://ko-fi.com/YOURNAME" target="_blank">
             ☕ Support Us
         </a>
     </div>
@@ -937,9 +936,9 @@ const CONFIG = {
     maxExtensions: 3,
 
     // Polling intervals (milliseconds)
-    pollActive: 5000,    // 5 sec when user active
-    pollIdle: 30000,     // 30 sec when idle
-    pollHidden: 60000,   // 60 sec when tab hidden
+    pollActive: 2000,    // 5 sec when user active
+    pollIdle: 8000,     // 30 sec when idle
+    pollHidden: 12000,   // 60 sec when tab hidden
 
     // How long until user is considered idle
     idleTimeout: 60000,  // 1 minute
@@ -966,6 +965,7 @@ let state = {
 
     // Which API we are using right now
     currentAPI: 'guerrilla',
+    lockedProvider: false,
 
     // List of emails in inbox
     messages: [],
@@ -1263,19 +1263,12 @@ const API = {
 
     // Switch to next working API
     switchAPI() {
-        if (state.currentAPI === 'guerrilla' &&
-            state.apiHealth.onesecmail) {
+        if (state.lockedProvider) return false;
+        if (state.currentAPI === 'guerrilla' && state.apiHealth.onesecmail) {
             state.currentAPI = 'onesecmail';
-            updateStatus('Switched to backup provider');
-            showToast('⚡ Switched to backup provider');
-        } else if (state.currentAPI === 'onesecmail' &&
-                   state.apiHealth.guerrilla) {
-            state.currentAPI = 'guerrilla';
-            updateStatus('Switched to primary provider');
-        } else {
-            updateStatus('All providers busy', true);
-            showToast('⚠️ All providers busy, retrying...');
+            return true;
         }
+        return false;
     },
 
     // Health check all APIs
@@ -1439,6 +1432,7 @@ async function generateEmail(forceNew = false) {
         const result = await API.getEmail();
 
         state.email = result.email;
+        state.lockedProvider = true;
         state.emailLogin = result.login;
         state.emailDomain = result.domain;
         state.timeLeft = CONFIG.emailExpiry;
@@ -1918,7 +1912,17 @@ function init() {
 }
 
 // Run when page loads
+
+window.addEventListener('focus', () => {
+    if(state.email) fetchMessages();
+});
+
+document.addEventListener('visibilitychange', () => {
+    if(!document.hidden && state.email) fetchMessages();
+});
+
 window.addEventListener('load', init);
+
 
 </script>
 </body>
